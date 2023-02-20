@@ -18,6 +18,8 @@ CREATE TABLE IF NOT EXISTS tickets (
     submit_date text NOT NULL
 ); """
 
+# The table needs to be expanded so that each entry has 8 columns
+
 
 def main():
     print("Hello World!")
@@ -32,9 +34,11 @@ def main():
     create_database_table(sql_create_tickets_table)
 
     # Test submission of a ticket to the database
-    ticket_1 = ("I have a huge problem that with one of your tools", 10, "2023-20-02")
+    ticket_1 = ("Every time I open your tool it crashes my laptop!", 10, "2023-20-02")
     create_ticket(ticket_1)
-    get_table_contents("TICKETS")
+
+    # Print tables contents to the console
+    print_table_contents("tickets")
     database_connection.close()
 
 
@@ -76,9 +80,10 @@ def create_ticket(ticket):
     return cur.lastrowid
 
 
-def get_table_contents(table_name):
+def print_table_contents(table_name):
     cur = database_connection.cursor()
     cur.execute("SELECT * FROM " + str(table_name))
+    # * Can be replaced with the property name you're trying to get
     print(cur.fetchall())
 
 
