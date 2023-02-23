@@ -1,7 +1,8 @@
 import sqlite3
 from sqlite3 import Error
 import os
-
+import cmd
+from datetime import date
 
 # The name of the database file, this should be set manually
 database_filename = "ticket_database"
@@ -22,7 +23,6 @@ CREATE TABLE IF NOT EXISTS tickets (
 
 
 def main():
-    print("Hello World!")
     # Store directory and database paths in constant variables
     initialise_directory_variables()
 
@@ -34,12 +34,53 @@ def main():
     create_database_table(sql_create_tickets_table)
 
     # Test submission of a ticket to the database
-    ticket_1 = ("Every time I open your tool it crashes my laptop!", 10, "2023-20-02")
-    create_ticket(ticket_1)
-
+    # ticket_1 = ("Every time I open your tool it crashes my laptop!", 10, "2023-20-02")
+    # create_ticket(ticket_1)
+    MainLoop().cmdloop()
     # Print tables contents to the console
-    print_table_contents("tickets")
     database_connection.close()
+
+
+class MainLoop(cmd.Cmd):
+    intro = "Welcome to the ticket manager, type help or ? to list commands."
+    prompt = ">>"
+
+    def do_list(self, arg):
+        """get all the tickets"""
+        print_table()
+
+    def do_list_specific(self, arg):
+        """gets a specific ticket, enter the id of the ticket you want e.g. print_ticket 1"""
+        if not arg.isnumeric():
+            print("Argument cannot be string")
+            return
+        if arg == "":
+            print("No argument provided")
+            return
+        print_ticket(arg[0])
+
+    def do_count(self, arg):
+        """Gets the number of active tickets"""
+        print_number_of_active_tickets()
+
+    def do_create(self, arg):
+        """Creates a ticket and adds it to the tickets table"""
+        description = input("Please describe your problem: ")
+        priority = int(input("Please enter a priority for your ticket between 1 and 10: "))
+        current_date = date.today().strftime("%d/%m/%Y")
+
+        ticket = (description, priority, current_date)
+        create_ticket(ticket)
+
+    def do_delete(self, arg):
+        """Removes a ticket from the table using its ID"""
+        if not arg.isnumeric():
+            print("Argument cannot be string")
+            return
+        if arg == "":
+            print("No argument provided")
+            return
+        delete_ticket(arg[0])
 
 
 def initialise_directory_variables():
@@ -51,7 +92,6 @@ def initialise_directory_variables():
 
 
 def create_database_connection(database_file):
-    print("Connecting to database...")
     conn = None
     try:
         conn = sqlite3.connect(database_file)
@@ -62,7 +102,6 @@ def create_database_connection(database_file):
 
 
 def create_database_table(create_table_sql):
-    print("Creating table...")
     try:
         c = database_connection.cursor()
         c.execute(create_table_sql)
@@ -80,10 +119,33 @@ def create_ticket(ticket):
     return cur.lastrowid
 
 
-def print_table_contents(table_name):
+def delete_ticket(ticket_id):
+    ticket_id = ticket_id.strip()
+    sql = """DELETE FROM tickets WHERE id ="""+ticket_id
     cur = database_connection.cursor()
-    cur.execute("SELECT * FROM " + str(table_name))
-    # * Can be replaced with the property name you're trying to get
+    cur.execute(sql)
+    database_connection.commit()
+
+
+def print_table():
+    cur = database_connection.cursor()
+    cur.execute("SELECT * FROM tickets")
+    # Can be replaced with the property name I'm trying to get
+    tickets = cur.fetchall()
+    for ticket in tickets:
+        print(ticket)
+
+
+def print_number_of_active_tickets():
+    cur = database_connection.cursor()
+    cur.execute("SELECT COUNT(*) FROM tickets")
+    print(cur.fetchone()[0])
+
+
+def print_ticket(ticket_id):
+    ticket_id = ticket_id.strip()
+    cur = database_connection.cursor()
+    cur.execute("SELECT * FROM tickets WHERE id ="+ticket_id)
     print(cur.fetchall())
 
 
