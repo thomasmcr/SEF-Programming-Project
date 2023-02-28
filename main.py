@@ -52,7 +52,9 @@ class MainLoop(cmd.Cmd):
         print("There are " + str(count) + " active tickets")
 
     def do_create(self, arg):
-        """Creates a ticket and adds it to the tickets table"""
+        """Creates a new ticket
+            >>Create  | Opens the ticket creation form
+        """
         current_date = date.today().strftime("%d/%m/%Y")
         software_name = validate_string_input("Please enter the name of the software package the ticket relates to: ")
         description = validate_string_input("Please describe your problem: ")
@@ -86,10 +88,19 @@ class MainLoop(cmd.Cmd):
             print("Argument must be an integer ID")
             return
 
+        if not database_manager.check_ticket_exists(arg[0]):
+            print("Ticket can't be amended as no ticket with that ID exists")
+            return
+
+        old_ticket = database_manager.get_ticket(arg[0])
+
+        print(old_ticket)
+
         current_date = date.today().strftime("%d/%m/%Y")
-        software_name = validate_string_input("Enter the amended name of the software package the ticket relates to: ")
-        description = validate_string_input("Enter the amended problem description: ")
-        email = validate_string_input("Enter the amended contact email:  ")
+        software_name = validate_string_input("Enter the amended software name: ")
+        description = validate_string_input("Enter the amended description: ")
+        email = validate_string_input("Enter the amended contact email: ")
+
         priority = 5
         submit_date = current_date
         resolved = False

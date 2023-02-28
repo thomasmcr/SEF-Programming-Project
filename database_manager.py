@@ -108,6 +108,17 @@ def get_ticket(ticket_id):
     return ticket
 
 
+# Returns true if a ticket exists with the given ID
+def check_ticket_exists(ticket_id):
+    sql = """SELECT * FROM tickets WHERE id="""+ticket_id
+    cur = database_connection.cursor()
+    cur.execute(sql)
+    tickets = cur.fetchall()
+    if(len(tickets)) == 0:
+        return False
+    return True
+
+
 # Checks the date in the tickets table is valid and isn't corrupt. should be called before reading or after writing to
 # the database
 def validate_table_contents():
