@@ -1,0 +1,2 @@
+Validating table contents: 08/03/2023 13:14:48 Create ticket command
+Duplicate key(s) found in database: 1

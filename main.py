@@ -74,6 +74,9 @@ class MainLoop(cmd.Cmd):
         elif arg == "":
             print("No argument provided")
             return
+        elif not check_ticket_exists(arg[0]):
+            print("No ticket with given ID")
+            return
         else:
             delete_ticket(arg[0])
 

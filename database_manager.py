@@ -1,6 +1,8 @@
 import os
 import sqlite3
 from sqlite3 import Error
+from datetime import date
+import time
 
 
 database_filename = "ticket_database"
@@ -67,6 +69,7 @@ def create_ticket(ticket):
     cur = database_connection.cursor()
     cur.execute(sql, ticket)
     database_connection.commit()
+    validate_table_contents("Create ticket command")
 
 
 def delete_ticket(ticket_id):
@@ -75,6 +78,7 @@ def delete_ticket(ticket_id):
     cur = database_connection.cursor()
     cur.execute(sql)
     database_connection.commit()
+    validate_table_contents("Delete ticket command")
 
 
 def amend_ticket(ticket_id, amended_ticket):
@@ -84,6 +88,7 @@ def amend_ticket(ticket_id, amended_ticket):
     cur = database_connection.cursor()
     cur.execute(sql, amended_ticket)
     database_connection.commit()
+    validate_table_contents("Amend ticket command")
 
 
 def get_table():
@@ -121,13 +126,32 @@ def check_ticket_exists(ticket_id):
 
 # Checks the date in the tickets table is valid and isn't corrupt. should be called before reading or after writing to
 # the database
-def validate_table_contents():
+def validate_table_contents(comment=""):
+    log_file = open("log.txt", "a+")
+    current_time = str(time.strftime("%H:%M:%S", time.localtime()))
+    current_date = str(date.today().strftime("%d/%m/%Y"))
+    problem = False
+
+    log_file.write("Validating table contents: " + current_date + " " + current_time + " " + str(comment) + "\n")
+
+    primary_keys = []
     for ticket in get_table():
         ticket_id = ticket[0]
         description = ticket[1]
         priority = ticket[3]
         submit_date = ticket[4]
 
+        if ticket_id in primary_keys:
+            # The id has been seen more than once and entry likely corrupt
+            problem = True
+            log_file.write("Duplicate key(s) found in database: "+str(ticket_id) + "\n")
+        else:
+            primary_keys.append(ticket_id)
+
+    if not problem:
+        log_file.write("End of table, no problems found" + "\n")
+
+    log_file.close()
 
 
 
