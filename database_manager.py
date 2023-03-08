@@ -23,7 +23,6 @@ CREATE TABLE IF NOT EXISTS tickets (
 ); """
 
 
-
 def initialise():
     # Directory of the project
     directory = os.path.dirname(__file__)
@@ -91,6 +90,18 @@ def amend_ticket(ticket_id, amended_ticket):
     validate_table_contents("Amend ticket command")
 
 
+def resolve_ticket(ticket_id, comment):
+    current_date = str(date.today().strftime("%d/%m/%Y"))
+    sql = """UPDATE tickets SET resolved = True, resolution_comment = \"{resolution_comment}\",
+    resolution_date = \"{resolution_date}\" WHERE id={id}"""
+
+    sql = sql.format(resolution_comment=comment, resolution_date=current_date, id=ticket_id)
+    cursor = database_connection.cursor()
+    cursor.execute(sql)
+    database_connection.commit()
+    validate_table_contents()
+
+
 def get_table():
     cur = database_connection.cursor()
     cur.execute("SELECT * FROM tickets")
@@ -111,6 +122,12 @@ def get_ticket(ticket_id):
     cur.execute("SELECT * FROM tickets WHERE id ="+ticket_id)
     ticket = cur.fetchall()
     return ticket
+
+def get_resolved_tickets():
+    cursor = database_connection.cursor()
+    cursor.execute("SELECT * FROM tickets WHERE resolved=True")
+    resolved_tickets = cursor.fetchall()
+    return resolved_tickets
 
 
 # Returns true if a ticket exists with the given ID
@@ -141,6 +158,7 @@ def validate_table_contents(comment=""):
         priority = ticket[3]
         submit_date = ticket[4]
 
+        # Duplicate primary-key check
         if ticket_id in primary_keys:
             # The id has been seen more than once and entry likely corrupt
             problem = True
@@ -152,6 +170,7 @@ def validate_table_contents(comment=""):
         log_file.write("End of table, no problems found" + "\n")
 
     log_file.close()
+
 
 
 

@@ -1,2 +1,44 @@
 Validating table contents: 08/03/2023 13:14:48 Create ticket command
 Duplicate key(s) found in database: 1
+Validating table contents: 08/03/2023 16:23:06 Amend ticket command
+End of table, no problems found
+Validating table contents: 08/03/2023 16:24:08 Delete ticket command
+End of table, no problems found
+Validating table contents: 08/03/2023 16:24:10 Delete ticket command
+End of table, no problems found
+Validating table contents: 08/03/2023 16:24:11 Delete ticket command
+End of table, no problems found
+Validating table contents: 08/03/2023 16:24:12 Delete ticket command
+End of table, no problems found
+Validating table contents: 08/03/2023 16:24:14 Delete ticket command
+End of table, no problems found
+Validating table contents: 08/03/2023 16:24:16 Delete ticket command
+End of table, no problems found
+Validating table contents: 08/03/2023 16:24:18 Delete ticket command
+End of table, no problems found
+Validating table contents: 08/03/2023 16:35:28 Create ticket command
+End of table, no problems found
+Validating table contents: 08/03/2023 16:35:42 Amend ticket command
+End of table, no problems found
+Validating table contents: 08/03/2023 16:42:03 Amend ticket command
+End of table, no problems found
+Validating table contents: 08/03/2023 16:59:50 
+End of table, no problems found
+Validating table contents: 08/03/2023 17:00:03 Delete ticket command
+End of table, no problems found
+Validating table contents: 08/03/2023 17:00:38 Create ticket command
+End of table, no problems found
+Validating table contents: 08/03/2023 17:09:58 Create ticket command
+End of table, no problems found
+Validating table contents: 08/03/2023 17:10:17 
+End of table, no problems found
+Validating table contents: 08/03/2023 17:16:33 
+End of table, no problems found
+Validating table contents: 08/03/2023 17:20:27 Create ticket command
+End of table, no problems found
+Validating table contents: 08/03/2023 17:21:28 Delete ticket command
+End of table, no problems found
+Validating table contents: 08/03/2023 17:21:33 Delete ticket command
+End of table, no problems found
+Validating table contents: 08/03/2023 17:21:34 Delete ticket command
+End of table, no problems found

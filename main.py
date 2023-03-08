@@ -27,10 +27,10 @@ class MainLoop(cmd.Cmd):
             >>list   | prints all tickets
             >>list 1 | prints ticket with an ID of 1
         """
-
         if get_number_of_active_tickets() <= 0:
             print("There are no active tickets")
             return
+
         elif arg == "":
             for ticket in get_table():
                 print(ticket)
@@ -110,6 +110,38 @@ class MainLoop(cmd.Cmd):
         amended_ticket = (software_name, description, email, priority, submit_date, resolved, None, None)
         database_manager.amend_ticket(arg[0], amended_ticket)
 
+    def do_resolve(self, arg):
+        """Sets ticket with the given ID to resolved
+            >>resolve 1 | resolves ticket and lets you provide a resolution comment
+        """
+        if arg == "":
+            print("Please provide a valid ticket ID")
+            return
+        elif not arg.isnumeric():
+            print("Argument must be an integer ID")
+            return
+
+        if not check_ticket_exists(arg[0]):
+            print("Ticket can't be resolved as no ticket with that ID exists")
+            return
+
+        resolution_comment = validate_string_input("Enter a resolution comment: ")
+        resolve_ticket(arg[0], resolution_comment)
+
+    def do_resolved(self, arg):
+        """Lists all resolved tickets
+            >>resolved | prints resolved tickets to console
+        """
+
+        if get_number_of_active_tickets() <= 0:
+            print("There are no active tickets")
+            return
+
+        print("Ticket ID, Software Name, Description, Contact Email, Priority, Submission Date, "
+              "Resolved, Resolution Comment, Resolved Date \n")
+        for ticket in get_resolved_tickets():
+            print(ticket)
+
 
 def validate_string_input(message):
     string_input = input(message)
@@ -117,7 +149,7 @@ def validate_string_input(message):
         return string_input.lower()
     else:
         print("Invalid input, ensure field isn't blank")
-        validate_string_input(message)
+        return validate_string_input(message)
 
 
 # Press the green button in the gutter to run the script.
