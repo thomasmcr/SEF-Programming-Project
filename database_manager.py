@@ -158,9 +158,6 @@ def validate_table_contents(comment=""):
     primary_keys = []
     for ticket in get_table():
         ticket_id = ticket[0]
-        description = ticket[1]
-        priority = ticket[3]
-        submit_date = ticket[4]
 
         # Duplicate primary-key check
         if ticket_id in primary_keys:
@@ -169,6 +166,8 @@ def validate_table_contents(comment=""):
             log_file.write("Duplicate key(s) found in database: "+str(ticket_id) + "\n")
         else:
             primary_keys.append(ticket_id)
+
+        # Note the additional validation rules are built into the table as SQL constraints
 
     if not problem:
         log_file.write("End of table, no problems found" + "\n")
