@@ -54,8 +54,8 @@ def create_database_connection(database_file):
 
 def create_database_table(create_table_sql):
     try:
-        c = database_connection.cursor()
-        c.execute(create_table_sql)
+        cur = database_connection.cursor()
+        cur.execute(create_table_sql)
         print("Successfully created table")
     except Error as error:
         print(error)
@@ -91,42 +91,46 @@ def amend_ticket(ticket_id, amended_ticket):
 
 
 def resolve_ticket(ticket_id, comment):
-    current_date = str(date.today().strftime("%d/%m/%Y"))
     sql = """UPDATE tickets SET resolved = True, resolution_comment = \"{resolution_comment}\",
     resolution_date = \"{resolution_date}\" WHERE id={id}"""
-
+    current_date = str(date.today().strftime("%d/%m/%Y"))
     sql = sql.format(resolution_comment=comment, resolution_date=current_date, id=ticket_id)
     cursor = database_connection.cursor()
     cursor.execute(sql)
     database_connection.commit()
-    validate_table_contents()
+    validate_table_contents("Resolve ticket command")
 
 
 def get_table():
+    sql = """SELECT * FROM tickets"""
     cur = database_connection.cursor()
-    cur.execute("SELECT * FROM tickets")
+    cur.execute(sql)
     # Can be replaced with the property name I'm trying to get
     tickets = cur.fetchall()
     return tickets
 
 
 def get_number_of_active_tickets():
+    sql = """SELECT COUNT(*) FROM tickets"""
     cur = database_connection.cursor()
-    cur.execute("SELECT COUNT(*) FROM tickets")
+    cur.execute(sql)
     return cur.fetchone()[0]
 
 
 def get_ticket(ticket_id):
     ticket_id = ticket_id.strip()
+    sql = """SELECT * FROM tickets WHERE id ="""+ticket_id
     cur = database_connection.cursor()
-    cur.execute("SELECT * FROM tickets WHERE id ="+ticket_id)
+    cur.execute(sql)
     ticket = cur.fetchall()
     return ticket
 
+
 def get_resolved_tickets():
-    cursor = database_connection.cursor()
-    cursor.execute("SELECT * FROM tickets WHERE resolved=True")
-    resolved_tickets = cursor.fetchall()
+    sql = """SELECT * FROM tickets WHERE resolved=True"""
+    cur = database_connection.cursor()
+    cur.execute(sql)
+    resolved_tickets = cur.fetchall()
     return resolved_tickets
 
 

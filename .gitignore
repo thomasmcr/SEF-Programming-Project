@@ -5,3 +5,4 @@
 .idea/modules.xml
 .idea/SEF Project Application.iml
 .idea/vcs.xml
+__pycache__/

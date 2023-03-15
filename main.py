@@ -27,10 +27,11 @@ class MainLoop(cmd.Cmd):
             >>list   | prints all tickets
             >>list 1 | prints ticket with an ID of 1
         """
+        print("Primary Key | Software Name | Description | Email | Priority | Submit Date | Resolved | Comment "
+              "| Resolved Date")
         if get_number_of_active_tickets() <= 0:
             print("There are no active tickets")
             return
-
         elif arg == "":
             for ticket in get_table():
                 print(ticket)
@@ -44,7 +45,6 @@ class MainLoop(cmd.Cmd):
         """Exits the application"""
         print("Powering down :O")
         return True
-
 
     def do_count(self, arg):
         """Gets the number of active tickets"""
@@ -143,6 +143,7 @@ class MainLoop(cmd.Cmd):
             print(ticket)
 
 
+# Ensures that string input isn't blank
 def validate_string_input(message):
     string_input = input(message)
     if len(string_input) and string_input != "":

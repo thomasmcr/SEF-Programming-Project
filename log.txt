@@ -42,3 +42,11 @@ Validating table contents: 08/03/2023 17:21:33 Delete ticket command
 End of table, no problems found
 Validating table contents: 08/03/2023 17:21:34 Delete ticket command
 End of table, no problems found
+Validating table contents: 09/03/2023 16:50:39 Create ticket command
+End of table, no problems found
+Validating table contents: 09/03/2023 16:51:08 
+End of table, no problems found
+Validating table contents: 15/03/2023 14:23:33 Delete ticket command
+End of table, no problems found
+Validating table contents: 15/03/2023 14:29:59 Create ticket command
+End of table, no problems found
